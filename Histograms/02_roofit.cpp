@@ -31,10 +31,10 @@ int main(int argc, char **argv)
     {
         zmass_5bins->Fill(point);
     }
-    RooRealVar x("x", "m_{Z}", 80, 100);
+    RooRealVar x("x", "m_{Z} (GeV)", 80, 100);
     RooRealVar mean("mean", "mean Z mass", 90, 85, 100);
     RooRealVar sigma("sigma", "mass sigma", 2, 1, 5);
-    RooGaussian gauss("gauss", "pd", x, mean, sigma);
+    RooGaussian gauss("gauss", "Gaussian PDF", x, mean, sigma);
     RooDataHist dh("dh", "data", RooArgList(x), zmass_5bins);
 
     auto result_b5 = gauss.fitTo(dh, PrintLevel(0));

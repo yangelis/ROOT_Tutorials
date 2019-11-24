@@ -4,7 +4,7 @@
 
 import ROOT
 from ROOT import RDataFrame
-df1 = RDataFrame('TreeS','../Data/higgs_small.root')
+df = RDataFrame('TreeS','../Data/higgs_small.root')
 
 # Sometimes when choosing the branch name 
 # python string dont work, so we are using
@@ -14,4 +14,4 @@ columns = ROOT.vector('string')()
 columns.push_back('lepton_pT')
 columns.push_back('lepton_eta')
 # Snapshot saves in a new root file in a new Tree 
-df1.Snapshot('myTree','my_output.root',columns)
+df.Snapshot('myTree','my_output.root',columns)

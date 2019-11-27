@@ -54,3 +54,20 @@ cd /usr/share/dbus-1 && sudo vim session.conf
 ```
 
 Αν όλα έχουν πάει καλά, έχουμε τελειώσει και μπορούμε να χρησιμοποιήσουμε τις οδηγίες τις προηγούμενης παραγράφου.
+
+
+# ROOT Binaries prerequisites
+Για να τρέξει η ROOT, χρειάζεται κάποιες βιβλιοθήκες, όπου ειδικά στην περίπτωση του WSL πολύ πιθανόν να λοίπουν. Ο εύκολος τρόπος είναι να εγκαταστήσουμε τα [build prerequisites](https://root.cern.ch/build-prerequisites). Τα πακέτα που πολύ πιθανόν να είναι απαραίτητα είναι:
+
+* gcc
+* g++
+* binutils
+* libgsl-dev (?)
+
+Αν κάποιος θέλει να χρησιμοποιήσει python, μπορεί να κατεβάσει τα:
+
+* python
+* python-dev
+* python-numpy-dev
+
+ **!! Σημείωση**: Τα binaries δουλεύουν με python2

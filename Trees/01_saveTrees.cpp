@@ -1,13 +1,15 @@
 #include <TFile.h>
 #include <TTree.h>
 #include <TRandom3.h>
+#include <memory>
 
 using namespace std;
 
-TTree *makeTTree(const int n_points)
+shared_ptr<TTree> makeTTree(const int n_points)
 {
 
-    TTree *tree = new TTree("tree", "tree");
+    shared_ptr<TTree> tree;
+    tree = make_shared<TTree>("tree", "tree");
     double px, py;
     int *xx = new int;
     tree->Branch("px", &px);
@@ -28,7 +30,6 @@ int main(int argc, char **argv)
     TFile hfile("myfile.root", "RECREATE");
     auto myTree = makeTTree(100);
     myTree->Write();
-    hfile.Write();
     hfile.Close();
     return 0;
 }

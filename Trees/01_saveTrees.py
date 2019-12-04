@@ -3,7 +3,7 @@ from array import array
 
 
 def makeTTree(n_points):
-    tree = TTree('tree', 'tree')
+    tree = TTree('tree', 'my tree')
 
     px = array('d', n_points*[0])
     py = array('d', n_points*[0])
@@ -23,5 +23,4 @@ def makeTTree(n_points):
 hfile = TFile("myfile.root", "RECREATE")
 myTree = makeTTree(100)
 myTree.Write()
-hfile.Write()
 hfile.Close()

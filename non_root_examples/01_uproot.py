@@ -11,4 +11,3 @@ path = "../Data/"
 filename = path + "higgs_small.root"
 
 rt_file = uproot.open(filename)
-

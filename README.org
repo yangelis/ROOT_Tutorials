@@ -2,6 +2,12 @@
 
 * Compiling ROOT
 
+** Dependecies
+Πριν ξεκινήσουμε την εγκατάσταση της ROOT, χρειαζόμαστε κάποια πακέτα, τα οποία
+βρίσκονται στην σελίδα [build
+prerequisites](https://root.cern.ch/build-prerequisites). Σε περίπτωση κάποιου
+distro linux που δεν αναγράφεται σε αυτήν την σελίδα, απλά χρειάζονται τα ιδια
+πακέτα, αλλά με την ονομασία που έχουν στον package manager του συγκεκριμένου distro.
 
 
 
@@ -65,7 +71,8 @@ cd /usr/share/dbus-1 && sudo vim session.conf
 
 
 ** ROOT Binaries prerequisites
-Για να τρέξει η ROOT, χρειάζεται κάποιες βιβλιοθήκες, όπου ειδικά στην περίπτωση του WSL πολύ πιθανόν να λοίπουν. Ο εύκολος τρόπος είναι να εγκαταστήσουμε τα [build prerequisites](https://root.cern.ch/build-prerequisites). Τα πακέτα που πολύ πιθανόν να είναι απαραίτητα είναι:
+Για να τρέξει η ROOT, χρειάζεται κάποιες βιβλιοθήκες, όπου ειδικά στην περίπτωση
+ του WSL πολύ πιθανόν να λοίπουν. Ο εύκολος τρόπος είναι να εγκαταστήσουμε τα [build prerequisites](https://root.cern.ch/build-prerequisites). Τα πακέτα που πολύ πιθανόν να είναι απαραίτητα είναι:
 
 + gcc
 + g++

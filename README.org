@@ -23,6 +23,13 @@ ccmake path/to/source
 **** Python Interface
 Αν κάποιος θέλει να χρησιμοποιήσει για παράδειγμα το δικό του conda environment
 μαζί με την ROOT, τότε αρκεί να αλλάξει μόνο το PATH για το ~PYTHON_EXECUTABLE~
+**** Other libraries
++ vc : A library to ease explicit vectorization of C++ code, can be used from RooFit
++ vdt: A vectorised math library from CERN, can be used from RooFit
++ tbb: High level abstract threading library
++ gsl: GNU Scientific Library
+
+
 
 
 

@@ -76,3 +76,44 @@ int main(int argc, char** argv){
 }
 
 ```
+
+## Making Dictionaries
+Ας υποθέσουμε ότι έχουμε ένα struct για να εκφράσουμε ένα σωματίδιο, όπου θέλουμε ένα id του σωματιδίου, ώστε να ξέρουμε ποιο είναι, και 3 double μεταβλητές για την ορμή του. Φτιάχνουμε ένα αρχείο *myParticle.h*, όπου θα περιέχει:
+
+```cpp
+struct myParticle {
+  int id;
+  double px, py, pz;
+  myParticle() : id(0), px(0), py(0), pz(0){};
+  myParticle(int i, double pX, double pY, double pZ)
+      : id(i), px(pX), py(pY), pz(pZ){};
+};
+```
+
+Έστω ότι γενάμε με κάποιο τρόπο γεγονότα, όπου το καθένα έχει ένα αριθμό σωματιδίων. Θα χρησιμοποιήσουμε ένα ```std::vector<myParticle>```  σαν ένα container για τα σωματίδια που υπάρχουν για ένα γεγονός. Αυτό σημαίνει ότι στο root file μας, θα αποθηκεύσουμε ```std::vector<myParticle>```. Αλλά η ROOT δεν ξέρει πώς να το κάνει αυτό.
+Οπότε η λύση είναι να φτιάξουμε ένα dictionary που να λέει στην ROOT πώς να το χρησιμοποιήσει. 
+
+Για αρχή θα φτιάξουμε ένα header file, με όνομα *Linkdef.h*, που θα ορίσουμε ποιες καινούριες 'δομές' θα χρησιμοποιήσουμε. Αυτό το αρχείο θα περιέχει τα εξής:
+
+```cpp
+#include <vector>
+#include "myParticle.h"
+#if defined(__MAKECINT__) || defined(__ROOTCLING__)
+#pragma link C++ struct myParticle+;
+#pragma link C++ class std::vector<myParticle>+;
+#endif
+```
+
+
+Τώρα, μέσω του *rootcling* και των δυο header files που φτιάξαμε πιο πριν, Θα φτιάξουμε ένα αρχείο ας πούμε *myDict.cxx*, από το οποίο μέσω του compiler μας, θα φτιάξουμε ένα shared library (.so file). 
+
+``` sh
+rootcling -f myDict.cxx  $(CXXFLAGS) myParticle.h Linkdef.h
+```
+
+Επόμενο βήμα, είναι να φτιάξουμε ένα shared library αρχείο, που θα το ονομάσουμε *libmyParticle.so*. 
+```sh
+g++ -shared -fPIC -o libmyParticle.so `root-config --ldflags --clfags` myDict.cxx
+```
+
+Είμαστε πλέον σε θέση να χρεισιμοποιήσουμε τα `myParticle` και `std::vector<myParticle>`

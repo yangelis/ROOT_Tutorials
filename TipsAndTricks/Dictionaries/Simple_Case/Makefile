@@ -6,15 +6,14 @@ HEADERS := myParticle.h
 .SECONDEXPANSION:
 .PHONY: clean
 
-
-MyDict.cxx: $(HEADERS) Linkdef.h
-	rootcint -f $@  $(CXXFLAGS)  $^
+myVector: $$@.cpp libmyParticle.so
+	$(CXX) -g $< -o $@.exe $(ROOTCXXFLAGS) $(LIBS)
 
 libmyParticle.so: MyDict.cxx
-	g++ -shared -fPIC -o$@ `root-config --ldflags` $(CXXFLAGS) -std=c++17 -I$(ROOTSYS)/include $^
+	g++ -shared -fPIC -o $@ `root-config --ldflags --cflags` $^
 
-myVector: $$@.cpp
-	$(CXX) -g $< -o $@.exe $(ROOTCXXFLAGS) $(LIBS)
+MyDict.cxx: $(HEADERS) Linkdef.h
+	rootcling -f $@ $(CXXFLAGS) $^
 
 clean:
 	@rm -f *.exe; rm -f *.root; rm -f *.so;rm -f *.pcm; rm -f *.d

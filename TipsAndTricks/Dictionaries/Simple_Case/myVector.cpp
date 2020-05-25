@@ -1,21 +1,18 @@
+#include "myParticle.h"
 #include <TFile.h>
 #include <TRandom3.h>
+#include <TSystem.h>
 #include <TTree.h>
 #include <ctype.h>
 #include <vector>
 
 using namespace std;
 
-struct myParticle {
-  int id;
-  double px, py, pz;
-  myParticle(int i, double pX, double pY, double pZ)
-      : id(i), px(pX), py(pY), pz(pZ) {}
-};
-
 void myVector() {
 
-  constexpr size_t N = 1000;     // Number of Particles
+  // gSystem->Load("myTest_h.so");
+  gSystem->Load("libmyParticle.so");
+  constexpr size_t N = 10;       // Number of Particles
   constexpr size_t nEvents = 10; // Number of events
   TFile *f =
       TFile::Open("particle_vector.root", "RECREATE"); // Creating a root file
@@ -25,16 +22,15 @@ void myVector() {
   t->Branch("vmP", &vmP);                                    // Create a branch
 
   auto rng = TRandom3();
+  int id;
+  double px, py, pz;
   for (size_t event = 0; event < nEvents; event++) {
     vmP.clear();
-    int id;
-    double px, py, pz;
     for (size_t id = 0; id < N; id++) {
-      id = rng.Poisson(10);
       px = rng.Gaus();
       py = rng.Gaus();
       pz = rng.Gaus();
-      vmP.emplace_back(myParticle(id, px, py, pz));
+      vmP.push_back(myParticle(id, px, py, pz));
     }
     t->Fill();
   }

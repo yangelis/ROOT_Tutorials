@@ -6,8 +6,9 @@
 *.pcm
 
 
-## useless folders ##
+## useless stuff ##
 
 */.ipynb_checkpoints/
 *.pdf
 */.vscode/
+*.gdb_history

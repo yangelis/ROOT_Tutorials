@@ -10,7 +10,6 @@ using namespace std;
 
 void myVector() {
 
-  // gSystem->Load("myTest_h.so");
   gSystem->Load("libmyParticle.so");
   constexpr size_t N = 10;       // Number of Particles
   constexpr size_t nEvents = 10; // Number of events
@@ -25,11 +24,11 @@ void myVector() {
   double px, py, pz;
   for (size_t event = 0; event < nEvents; event++) {
     vmP.clear();
-    for (size_t id = 0; id < N; id++) {
+    for (int id = 0; id < N; id++) {
       px = rng.Gaus();
       py = rng.Gaus();
       pz = rng.Gaus();
-      vmP.push_back(myParticle(id, px, py, pz));
+      vmP.push_back({id, px, py, pz});
     }
     t->Fill();
   }

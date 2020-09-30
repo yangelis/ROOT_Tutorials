@@ -7,10 +7,10 @@ HEADERS := myParticle.h
 .PHONY: clean
 
 myVector: $$@.cpp libmyParticle.so
-	$(CXX) -g $< -o $@.exe $(ROOTCXXFLAGS) $(LIBS)
+	$(CXX) -g $^ -o $@.exe $(ROOTCXXFLAGS) $(LIBS)
 
 libmyParticle.so: MyDict.cxx
-	g++ -shared -fPIC -o $@ `root-config --ldflags --cflags` $^
+	$(CXX) -shared -fPIC -o $@ `root-config --ldflags --cflags` $^
 
 MyDict.cxx: $(HEADERS) Linkdef.h
 	rootcling -f $@ $(CXXFLAGS) $^

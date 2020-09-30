@@ -22,7 +22,6 @@ void myVector() {
   t->Branch("vmP", &vmP);                                    // Create a branch
 
   auto rng = TRandom3();
-  int id;
   double px, py, pz;
   for (size_t event = 0; event < nEvents; event++) {
     vmP.clear();

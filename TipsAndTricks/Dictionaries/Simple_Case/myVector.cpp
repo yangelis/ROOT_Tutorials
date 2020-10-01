@@ -1,4 +1,6 @@
 #include "myParticle.h"
+#include <ROOT/RDataFrame.hxx>
+#include <ROOT/RSnapshotOptions.hxx>
 #include <TFile.h>
 #include <TRandom3.h>
 #include <TSystem.h>
@@ -6,6 +8,7 @@
 #include <ctype.h>
 #include <vector>
 
+using RDF = ROOT::RDataFrame;
 using namespace std;
 
 void myVector() {
@@ -36,7 +39,33 @@ void myVector() {
   delete f;
 }
 
+void rdf_example() {
+  gSystem->Load("libmyParticle.so");
+  constexpr size_t N = 10;       // Number of Particles
+  constexpr size_t nEvents = 10; // Number of events
+
+  RDF df(nEvents);
+
+  auto rng = TRandom3();
+  auto df_vec = df.Define("particles", [&rng]() {
+                    return myParticle(
+                        {(int)rng.Gaus(), rng.Gaus(), rng.Gaus(), rng.Gaus()});
+                  }).Define("part_vec", [&rng]() {
+    vector<myParticle> vmP;
+    for (int id = 0; id < N; id++) {
+      vmP.push_back({id, rng.Gaus(), rng.Gaus(), rng.Gaus()});
+    }
+    return vmP;
+  });
+
+  ROOT::RDF::RSnapshotOptions opts;
+  opts.fMode = "UPDATE";
+  df_vec.Snapshot("parts", "testfile.root", {"particles"});
+  df_vec.Snapshot("vec", "testfile.root", {"part_vec"}, opts);
+}
+
 int main() {
   myVector();
+  rdf_example();
   return 0;
 }

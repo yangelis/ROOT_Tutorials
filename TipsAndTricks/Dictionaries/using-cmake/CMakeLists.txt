@@ -15,4 +15,7 @@ target_include_directories(myParticle PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 # target_link_libraries(myParticle PUBLIC ROOT::Core)
 
 add_executable(myVector myVector.cpp)
-target_link_libraries(myVector PUBLIC ROOT::Physics ROOT::Tree myParticle)
+
+# link approprietly with TTree and RDataFrame libs
+target_link_libraries(myVector PUBLIC ROOT::ROOTDataFrame
+                                      ROOT::Tree myParticle)

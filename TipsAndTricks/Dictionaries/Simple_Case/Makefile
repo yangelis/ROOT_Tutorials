@@ -1,5 +1,4 @@
 ROOTCXXFLAGS := $(shell root-config --cflags --glibs --ldflags)
-LIBS := libmyParticle.so
 HEADERS := myParticle.h
 
 
@@ -7,7 +6,7 @@ HEADERS := myParticle.h
 .PHONY: clean
 
 myVector: $$@.cpp libmyParticle.so
-	$(CXX) -g $^ -o myVector $(ROOTCXXFLAGS) $(LIBS)
+	$(CXX) -g $@.cpp libmyParticle.so -o $@ $(ROOTCXXFLAGS)
 
 libmyParticle.so: MyDict.cxx
 	$(CXX) -shared -fPIC -o $@ `root-config --ldflags --cflags` $^

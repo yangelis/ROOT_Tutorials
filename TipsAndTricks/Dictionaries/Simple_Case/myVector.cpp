@@ -9,29 +9,29 @@
 #include <vector>
 
 using RDF = ROOT::RDataFrame;
-using namespace std;
+using std::vector;
 
 void myVector() {
 
-  gSystem->Load("libmyParticle.so");
+  // gSystem->Load("libmyParticle.so");
   constexpr size_t N = 10;       // Number of Particles
   constexpr size_t nEvents = 10; // Number of events
   TFile *f =
-      TFile::Open("particle_vector.root", "RECREATE"); // Creating a root file
-  vector<myParticle> vmP; // std::vector containing myParticles
+      TFile::Open("vector_particles.root", "RECREATE"); // Creating a root file
+  vector<myParticle> particles; // std::vector containing myParticles
   TTree *t =
       new TTree("tvec", "Tree with vectors of myParticles"); // Create a TTree
-  t->Branch("vmP", &vmP);                                    // Create a branch
+  t->Branch("particles", &particles);                        // Create a branch
 
   auto rng = TRandom3();
   double px, py, pz;
   for (size_t event = 0; event < nEvents; event++) {
-    vmP.clear();
+    particles.clear();
     for (int id = 0; id < N; id++) {
       px = rng.Gaus();
       py = rng.Gaus();
       pz = rng.Gaus();
-      vmP.push_back({id, px, py, pz});
+      particles.push_back({id, px, py, pz});
     }
     t->Fill();
   }
@@ -40,7 +40,7 @@ void myVector() {
 }
 
 void rdf_example() {
-  gSystem->Load("libmyParticle.so");
+  // gSystem->Load("libmyParticle.so");
   constexpr size_t N = 10;       // Number of Particles
   constexpr size_t nEvents = 10; // Number of events
 
@@ -51,17 +51,19 @@ void rdf_example() {
                     return myParticle(
                         {(int)rng.Gaus(), rng.Gaus(), rng.Gaus(), rng.Gaus()});
                   }).Define("part_vec", [&rng]() {
-    vector<myParticle> vmP;
+    vector<myParticle> particles;
     for (int id = 0; id < N; id++) {
-      vmP.push_back({id, rng.Gaus(), rng.Gaus(), rng.Gaus()});
+      particles.push_back({id, rng.Gaus(), rng.Gaus(), rng.Gaus()});
     }
-    return vmP;
+    return particles;
   });
 
   ROOT::RDF::RSnapshotOptions opts;
+  // NOTE: we need the Snapshot Options in order to save to
+  // the same file, because the default is  "RECREATE"
   opts.fMode = "UPDATE";
-  df_vec.Snapshot("parts", "testfile.root", {"particles"});
-  df_vec.Snapshot("vec", "testfile.root", {"part_vec"}, opts);
+  df_vec.Snapshot("particles", "testfile.root", {"particles"});
+  df_vec.Snapshot("vectors", "testfile.root", {"part_vec"}, opts);
 }
 
 int main() {

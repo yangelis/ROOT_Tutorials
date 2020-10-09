@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MYPARTICLE_H
+#define MYPARTICLE_H
 
 struct myParticle {
   int id;
@@ -7,3 +8,5 @@ struct myParticle {
   myParticle(int i, double pX, double pY, double pZ)
       : id(i), px(pX), py(pY), pz(pZ){};
 };
+
+#endif

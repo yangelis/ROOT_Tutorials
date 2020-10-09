@@ -9,7 +9,7 @@
 #include <vector>
 
 using RDF = ROOT::RDataFrame;
-using namespace std;
+using std::vector;
 
 void myVector() {
 

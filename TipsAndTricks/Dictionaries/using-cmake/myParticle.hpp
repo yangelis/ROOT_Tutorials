@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MYPARTICLE_H
+#define MYPARTICLE_H
 
 #include <TROOT.h>
 #include <ROOT/RDataFrame.hxx>
@@ -12,3 +13,5 @@ struct myParticle {
 
     ClassDef(myParticle, 1);
 };
+
+#endif

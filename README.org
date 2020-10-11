@@ -1,6 +1,5 @@
 #+TITLE: README
-#+OPTIONS: toc:2
-#+TOC: tables
+#+OPTIONS: toc
 
 * Compiling ROOT
 

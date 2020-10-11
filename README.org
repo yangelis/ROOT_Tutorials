@@ -1,4 +1,5 @@
 #+TITLE: README
+#+OPTIONS: toc:2
 
 * Compiling ROOT
 

@@ -4,6 +4,12 @@
 - [Compiling C++ code using Cling](#Compiling-C-code-using-Cling)
 - [Compiling C++ code using ROOT Libraries](#compiling-c-code-using-root-libraries)
 - [Makefiles](#Makefiles)
+- [ROOT windows in compiled code](#root-windows-in-compiled-code)
+- [Making Dictionaries](#making-dictionaries)
+  - [Using Makefiles](#using-makefiles)
+  - [Using CMake](#using-cmake)
+  
+
 
 ## Compiling C++ code using Cling
 

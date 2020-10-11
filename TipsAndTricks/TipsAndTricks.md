@@ -2,7 +2,7 @@
 
 # Table of contents
 - [Compiling C++ code using Cling](#cling)
-- [Compiling C++ code using ROOT Libraries](#(Compiling C++ code using ROOT Libraries))
+- [Compiling C++ code using ROOT Libraries](#Compiling-C++-code-using-ROOT-Libraries)
 - [Makefiles](#Makefiles)
 
 ## Compiling C++ code using Cling [](#){name=cling}

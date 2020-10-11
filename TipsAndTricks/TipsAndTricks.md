@@ -5,7 +5,7 @@
 - [Compiling C++ code using ROOT Libraries](#compiling-c-code-using-root-libraries)
 - [Makefiles](#Makefiles)
 
-## Compiling C++ code using Cling [](#){name=cling}
+## Compiling C++ code using Cling
 
 Ο ποιος απλός τρόπος να κάνουμε compile έαν κώδικα που περιέχει βιβλιοθήκες της ROOT, είναι χρησιμοποιώντας την εξής εντολή στην ROOT:
 

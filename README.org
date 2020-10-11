@@ -1,8 +1,9 @@
 #+TITLE: README
 #+OPTIONS: toc:t
 
-
-[TABLE-OF-CONTENTS]
+:PROPERTIES:
+:TOC:      :include all
+:END:
 
 * Compiling ROOT
 

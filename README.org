@@ -1,6 +1,7 @@
 #+TITLE: README
 #+OPTIONS: toc
 
+[TABLE-OF-CONTENTS]
 * Compiling ROOT
 
 ** Dependecies

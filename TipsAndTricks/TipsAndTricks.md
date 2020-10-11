@@ -1,8 +1,8 @@
 # Tips and Tricks
 
 # Table of contents
-- [Compiling C++ code using Cling](#cling)
-- [Compiling C++ code using ROOT Libraries](#Compiling-C++-code-using-ROOT-Libraries)
+- [Compiling C++ code using Cling](#Compiling-C-code-using-Cling)
+- [Compiling C++ code using ROOT Libraries](#compiling-c-code-using-root-libraries)
 - [Makefiles](#Makefiles)
 
 ## Compiling C++ code using Cling [](#){name=cling}

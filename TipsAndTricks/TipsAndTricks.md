@@ -1,9 +1,10 @@
 # Tips and Tricks
 
 # Table of contents
-- [Compiling C++ code using Cling](#Compiling-C-code-using-Cling)
+- [Compiling C++ code using Cling](#compiling-c-code-using-cling)
 - [Compiling C++ code using ROOT Libraries](#compiling-c-code-using-root-libraries)
-- [Makefiles](#Makefiles)
+- [Makefiles](#makefiles)
+- [CMake](#cmake)
 - [ROOT windows in compiled code](#root-windows-in-compiled-code)
 - [Making Dictionaries](#making-dictionaries)
   - [Using Makefiles](#using-makefiles)
@@ -52,6 +53,9 @@ Tο ```--cflags``` κάνει setup τα include paths και το ```--glibs```
 
 * **TODO**
 
+## CMake
+[https://root.cern/manual/integrate_root_into_my_cmake_project/](https://root.cern/manual/integrate_root_into_my_cmake_project/)
+
 ## ROOT windows in compiled code
 
 Στην περίπτωση που θέλουμε να έχουμε ένα executable, για να εμφανιστούν τα παράθυρα της ROOT (πχ histo->Draw()), θα πρέπει να προσθέσουμε την βιβλιοθήκη ```TApplication.h```. Έπειτα, στην αρχή του προγράμματος προσθέτουμε την σειρά:
@@ -86,6 +90,7 @@ int main(int argc, char** argv){
 ```
 
 ## Making Dictionaries
+[https://root.cern/manual/interacting_with_shared_libraries/#generating-dictionaries](https://root.cern/manual/interacting_with_shared_libraries/#generating-dictionaries)
 ### Using Makefiles
 Ας υποθέσουμε ότι έχουμε ένα struct για να εκφράσουμε ένα σωματίδιο, όπου θέλουμε ένα id του σωματιδίου, ώστε να ξέρουμε ποιο είναι, και 3 double μεταβλητές για την ορμή του. Φτιάχνουμε ένα αρχείο *myParticle.h*, όπου θα περιέχει:
 

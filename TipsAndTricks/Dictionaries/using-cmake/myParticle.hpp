@@ -1,8 +1,8 @@
 #ifndef MYPARTICLE_H
 #define MYPARTICLE_H
 
-#include <TROOT.h>
 #include <ROOT/RDataFrame.hxx>
+#include <TROOT.h>
 
 struct myParticle {
   int id;
@@ -11,7 +11,7 @@ struct myParticle {
   myParticle(int i, double pX, double pY, double pZ)
       : id(i), px(pX), py(pY), pz(pZ){};
 
-    ClassDef(myParticle, 1);
+  ClassDef(myParticle, 1);
 };
 
 #endif

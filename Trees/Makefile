@@ -1,15 +1,16 @@
-ROOTCXXFLAGS := $(shell root-config --cflags --glibs --ldflags)
+ROOTCXXFLAGS := $(shell root-config --cflags)
+ROOTLIBS := $(shell root-config --libs)
 
 .SECONDEXPANSION:
 .PHONY: all clean
 
 
 01_saveTrees: $$@.cpp
-	$(CXX) -g $< -o $@.exe $(ROOTCXXFLAGS)
+	$(CXX) $(ROOTCXXFLAGS) $< -o $@ ${ROOTLIBS}
 
 
 
 all: 01_saveTrees 
 
 clean: 
-	@rm -f *.exe; rm -f *.root
+	@rm -f 01_saveTrees; rm -f *.root

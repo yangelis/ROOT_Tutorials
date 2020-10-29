@@ -8,8 +8,7 @@ using namespace std;
 shared_ptr<TTree> makeTTree(const int n_points)
 {
 
-    shared_ptr<TTree> tree;
-    tree = make_shared<TTree>("tree", "tree");
+    shared_ptr<TTree> tree = make_shared<TTree>("tree", "A simple tree");
     double px, py;
     int *xx = new int;
     tree->Branch("px", &px);

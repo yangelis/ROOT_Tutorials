@@ -1,18 +1,20 @@
-ROOTCXXFLAGS := $(shell root-config --cflags --glibs --ldflags)
-HEADERS := myParticle.h
+ROOTCXXFLAGS	:= $(shell root-config --cflags)
+ROOTLIBS			:= $(shell root-config --libs)
+HEADERS				:= myParticle.h
 
 
 .SECONDEXPANSION:
 .PHONY: clean
 
 myVector: $$@.cpp libmyParticle.so
-	$(CXX) -g $@.cpp libmyParticle.so -o $@ $(ROOTCXXFLAGS)
+	$(CXX) $(ROOTCXXFLAGS) $@.cpp libmyParticle.so -o $@ $(ROOTLIBS)
 
 libmyParticle.so: MyDict.cxx
-	$(CXX) -shared -fPIC -o $@ `root-config --ldflags --cflags` $^
+	$(CXX) -shared -fPIC $(ROOTCXXFLAGS) $^ -o $@ $(ROOTLIBS)
 
 MyDict.cxx: $(HEADERS) Linkdef.h
-	rootcling -f $@ $(CXXFLAGS) $^
+	rootcling -f $@ $(ROOTCXXFLAGS) $^
 
 clean:
-	@rm -f myVector; rm -f *.root; rm -f *.so;rm -f *.pcm; rm -f *.d
+	@rm -f myVector; rm -f *.root; rm -f *.so;rm -f *.pcm; rm -f *.d;\
+	rm MyDict.cxx

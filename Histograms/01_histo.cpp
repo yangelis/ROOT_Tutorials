@@ -19,7 +19,7 @@ int main(int argc, char **argv)
     auto h1 = new TH1D("h1", "A simple histogram", 100, -5, 5); // A new histogram with 100 bins, from -5 to 5
     constexpr int N = 10000;
     /// We fill the histogram in the loop using the Fill method
-    for (Int_t i = 0; i < N; i++)
+    for (Int_t i = 0; i < N; ++i)
     {
         h1->Fill(gRandom->Gaus());
     }

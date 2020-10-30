@@ -25,9 +25,9 @@ void myVector() {
 
   auto rng = TRandom3();
   double px, py, pz;
-  for (size_t event = 0; event < nEvents; event++) {
+  for (size_t event = 0; event < nEvents; ++event) {
     particles.clear();
-    for (int id = 0; id < N; id++) {
+    for (int id = 0; id < N; ++id) {
       px = rng.Gaus();
       py = rng.Gaus();
       pz = rng.Gaus();
@@ -52,7 +52,7 @@ void rdf_example() {
                         {(int)rng.Gaus(), rng.Gaus(), rng.Gaus(), rng.Gaus()});
                   }).Define("part_vec", [&rng]() {
     vector<myParticle> particles;
-    for (int id = 0; id < N; id++) {
+    for (int id = 0; id < N; ++id) {
       particles.push_back({id, rng.Gaus(), rng.Gaus(), rng.Gaus()});
     }
     return particles;

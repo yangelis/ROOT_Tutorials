@@ -9,8 +9,10 @@ ROOTLIBS := $(shell root-config --libs)
 	$(CXX) $(ROOTCXXFLAGS) $< -o $@ ${ROOTLIBS}
 
 
+02_readTrees: $$@.cpp
+	$(CXX) $(ROOTCXXFLAGS) $< -o $@ ${ROOTLIBS}
 
-all: 01_saveTrees 
+all: 01_saveTrees 02_readTrees
 
 clean: 
-	@rm -f 01_saveTrees; rm -f *.root
+	@rm -f 01_saveTrees;rm -f 02_readTrees; rm -f *.root

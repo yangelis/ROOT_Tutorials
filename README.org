@@ -1,13 +1,60 @@
 #+TITLE:ROOT Tutoliars
 
 This is a repo with a set of ROOT tutorials, written in C++ and Python. Each
-file tries to address a specific subject with a simple example of usage.
+file tries to address a specific subject with a simple example of usage. The
+setup process only addresses linux distributions or WSL on Windows 10.
 
 * ROOT Prerequisites
 The first step is to install all the prerequisite packages needed for ROOT.
 Instructions from the ROOT team are in the page
 [[https://root.cern/install/dependencies/]]. In case you using a different distro,
 you can just find the corresponding packages for that distro.
+* Using ROOT binaries in Linux
+When using one of the binary distribution, adding the next lines, in any of <span
+style="color:red">.bashrc, .zshrc, .profile, .zprofile</span>, is enough to
+start using ROOT.
+#+BEGIN_SRC bash
+export ROOTSYS=/path/to/installation/of/root
+source $ROOTSYS/bin/thisroot.sh
+#+END_SRC
+
+Sometimes, I noticed that some editors which use autocompletion, cant find
+ROOT's include dir, so I added explicitly some of the exports.
+#+BEGIN_SRC bash
+#### ROOT #########
+export ROOTSYS=/path/to/installation/of/root
+export PATH=$ROOTSYS/bin:$PYTHONDIR/bin:$PATH
+export LD_LIBRARY_PATH=$ROOTSYS/lib:$PYTHONDIR/lib:$LD_LIBRARY_PATH
+export PYTHONPATH=$ROOTSYS/lib:$PYTHONPATH
+export CPATH=$ROOTSYS/include:$CPATH
+source $ROOTSYS/bin/thisroot.sh
+#+END_SRC
+
+**  Running ROOT from windows with WSL
+Supposing one uses WLS with Ubuntu:
+
+- First step is to install [[https://sourceforge.net/projects/vcxsrv/][VcXsrv]] on Windows, which is a way to see WSL's
+  X-server. After the installation run the program. Each time you want to see
+  gui coming from the wsl, you need to run that program before starting wsl.
+
+- Next step, is to install some basic packages for the linux distro. I found
+  that the next line is enough to bring all the basic packages we need.
+#+BEGIN_SRC bash
+sudo apt-get install dbus synaptic nautilus gedit
+#+END_SRC
+- Now we need to change some options of dbus. This requires a text editor and
+  sudo privileges.
+#+BEGIN_SRC bash
+cd /usr/share/dbus-1 && sudo vim session.conf
+#+END_SRC
+At the end of the file and before the  ```</busconfig>```, add the next lines
+#+BEGIN_SRC bash
+<!-- <listen>unix:tmpdir=/tmp</listen> || Original Command --> to preserve original rules
+<listen>tcp:host=localhost,bind=0.0.0.0,port=0</listen>
+<auth>EXTERNAL</auth>
+<auth>DBUS_COOKIE_SHA1</auth>
+<auth>allow_anonymous</auth>
+#+END_SRC
 * Compiling ROOT
 ** Configuration
 Generally one can just follow [[https://root.cern/install/build_from_source/][building root from source]], but I like to
@@ -33,57 +80,3 @@ already installed in the system
 + tbb: High level abstract threading library
 + gsl: GNU Scientific Library
 
-* Using ROOT binaries
-When using one of the binary distribution, adding the next lines, in any of <span
-style="color:red">.bashrc, .zshrc, .profile, .zprofile</span>, is enough to
-start using ROOT.
-#+BEGIN_SRC bash
-export ROOTSYS=/path/to/installation/of/root
-source $ROOTSYS/bin/thisroot.sh
-#+END_SRC
-
-Sometimes, I noticed that some editors which use autocompletion, cant find
-ROOT's include dir, so I added explicitly some of the exports.
-#+BEGIN_SRC bash
-#### ROOT #########
-export ROOTSYS=/path/to/installation/of/root
-export PATH=$ROOTSYS/bin:$PYTHONDIR/bin:$PATH
-export LD_LIBRARY_PATH=$ROOTSYS/lib:$PYTHONDIR/lib:$LD_LIBRARY_PATH
-export PYTHONPATH=$ROOTSYS/lib:$PYTHONPATH
-export CPATH=$ROOTSYS/include:$CPATH
-source $ROOTSYS/bin/thisroot.sh
-#+END_SRC
-
-**  Running ROOT from windows with WSL
-Με το Windows Subsystem for Linux (WSL), μας δίνεται η δυνατότητα να
-χρησιμοποιήσουμε την ROOT σε Windows χωρίς τα κλασσικά virtual machine. Για
-λόγους ευκολίας χρησιμοποιούμε την έκδοση με Ubuntu.
-
-- Από την πλευρά των Windows, κατεβάζουμε την εφαρμογή
-  [[https://sourceforge.net/projects/vcxsrv/][VcXsrv]] ώστε να μπορούμε να
-  βλέπουμε το GUI προγραμμάτων που τρέχουν από το WSL στα Windows. Μετά την
-  εγκατάστασή του, ανοίγουμε το πρόγραμμα.
-
-- Στη συνέχεια, χρειάζονται κάποιες αλλαγές στο WSL. Για λόγους ευκολίας, εγκαθιστούμε τα πακέτα:
-#+BEGIN_SRC bash
-sudo apt-get install dbus synaptic nautilus gedit
-#+END_SRC
-
-(Το dbus είναι ώστε να έχουμε μια εικονική σύνδεση για το GUI, το synaptic είναι ενας package manager, ο nautilus είναι ο file manager που χρησιμοποιούν οι πλήρες εκδόσεις των Ubuntu με Gnome και ο gedit είναι ένας text editor)
-
-- Τώρα θα αλλάξουμε κάποιες ρυθμίσεις του dbus. Αρχικά, πηγαίνουμε στον φάκελο που υπάρχει το config file του, και το ανοίγουμε με έναν text editor.
-
-(!Σημείωση: Επειδή δεν έχετε ακόμα πρόσβαση σε γραφικών περιβάλλον, θα πρέπει να χρησιμοποιήσετε text editor στο terminal. Για λόγος ευκολίας επιλέγουμε τον nano.)
-#+BEGIN_SRC bash
-cd /usr/share/dbus-1 && sudo vim session.conf
-#+END_SRC
-Πηγαίνουμε στο τέλος του αρχείου και προσθέτουμε τις σειρές ακριβώς πριν το ```</busconfig>```:
-#+BEGIN_SRC bash
-<!-- <listen>unix:tmpdir=/tmp</listen> || Original Command --> to preserve original rules
-<listen>tcp:host=localhost,bind=0.0.0.0,port=0</listen>
-<auth>EXTERNAL</auth>
-<auth>DBUS_COOKIE_SHA1</auth>
-<auth>allow_anonymous</auth>
-#+END_SRC
-
-Αν όλα έχουν πάει καλά, έχουμε τελειώσει και μπορούμε να χρησιμοποιήσουμε τις οδηγίες τις προηγούμενης παραγράφου.

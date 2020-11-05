@@ -4,6 +4,7 @@ ROOTLIBS := $(shell root-config --libs)
 .SECONDEXPANSION:
 .PHONY: all clean
 
+all: 01_saveTrees 02_readTrees
 
 01_saveTrees: $$@.cpp
 	$(CXX) $(ROOTCXXFLAGS) $< -o $@ ${ROOTLIBS}
@@ -12,7 +13,5 @@ ROOTLIBS := $(shell root-config --libs)
 02_readTrees: $$@.cpp
 	$(CXX) $(ROOTCXXFLAGS) $< -o $@ ${ROOTLIBS}
 
-all: 01_saveTrees 02_readTrees
-
 clean: 
-	@rm -f 01_saveTrees;rm -f 02_readTrees; rm -f *.root
+	rm -f 01_saveTrees;rm -f 02_readTrees; rm -f *.root

@@ -16,5 +16,5 @@ MyDict.cxx: $(HEADERS) Linkdef.h
 	rootcling -f $@ $(ROOTCXXFLAGS) $^
 
 clean:
-	@rm -f myVector; rm -f *.root; rm -f *.so;rm -f *.pcm; rm -f *.d;\
+	rm -f myVector; rm -f *.root; rm -f *.so;rm -f *.pcm; rm -f *.d;\
 	rm MyDict.cxx

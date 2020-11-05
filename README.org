@@ -1,5 +1,8 @@
 #+TITLE:ROOT Tutoliars
 
+This is a repo with a set of ROOT tutorials, written in C++ and Python. Each
+file tries to address a specific subject with a simple example of usage.
+
 * ROOT Prerequisites
 The first step is to install all the prerequisite packages needed for ROOT.
 Instructions from the ROOT team are in the page

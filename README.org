@@ -1,12 +1,11 @@
-#+TITLE: README
+#+TITLE:ROOT Tutoliars
 
-* Compiling ROOT
-
-** Dependecies
+* ROOT Prerequisites
 The first step is to install all the prerequisite packages needed for ROOT.
 Instructions from the ROOT team are in the page
 [[https://root.cern/install/dependencies/]]. In case you using a different distro,
 you can just find the corresponding packages for that distro.
+* Compiling ROOT
 ** Configuration
 Generally one can just follow [[https://root.cern/install/build_from_source/][building root from source]], but I like to
 configure some option by hand. You can use the ~ccmake~ package for a GUI configuration:
@@ -24,15 +23,12 @@ Some useful options that one may want to change are:
 **** Python Interface
 Because the [[https://root.cern/install/build_from_source/#root-python-and-pyroot][PyROOT]] configuration changes from time to time, one should read that page.
 **** Other libraries
+These libraries can be build during ROOT building or just used by ROOT if they are
+already installed in the system
 + vc : A library to ease explicit vectorization of C++ code, can be used from RooFit
 + vdt: A vectorised math library from CERN, can be used from RooFit
 + tbb: High level abstract threading library
 + gsl: GNU Scientific Library
-
-
-
-
-
 
 * Using ROOT binaries
 When using one of the binary distribution, adding the next lines, in any of <span
@@ -88,22 +84,3 @@ cd /usr/share/dbus-1 && sudo vim session.conf
 #+END_SRC
 
 Αν όλα έχουν πάει καλά, έχουμε τελειώσει και μπορούμε να χρησιμοποιήσουμε τις οδηγίες τις προηγούμενης παραγράφου.
-
-
-** ROOT Binaries prerequisites
-Για να τρέξει η ROOT, χρειάζεται κάποιες βιβλιοθήκες, όπου ειδικά στην περίπτωση
- του WSL πολύ πιθανόν να λοίπουν. Ο εύκολος τρόπος είναι να εγκαταστήσουμε τα
- [[https://root.cern.ch/build-prerequisites][prerequisites]]. Τα πακέτα που πολύ πιθανόν να είναι απαραίτητα είναι:
-
-+ gcc
-+ g++
-+ binutils
-+ libgsl-dev (?)
-
-Αν κάποιος θέλει να χρησιμοποιήσει python, μπορεί να κατεβάσει τα:
-
-+ python
-+ python-dev
-+ python-numpy-dev
-
- **!! Σημείωση**: Τα binaries δουλεύουν με python2

@@ -45,20 +45,21 @@ g++ mycode.cpp -o mycode.exe `root-config --cflags --glibs --ldflags` -lRooFit -
 
 ## ROOT windows in compiled code
 
-Στην περίπτωση που θέλουμε να έχουμε ένα executable, για να εμφανιστούν τα παράθυρα της ROOT (πχ histo->Draw()), θα πρέπει να προσθέσουμε την βιβλιοθήκη ```TApplication.h```. Έπειτα, στην αρχή του προγράμματος προσθέτουμε την σειρά:
+One of the problems someone will face, is that GUI windows of ROOT won't appear in compiled code. For this to work we need to do an extra step, using the ```TApplication.h``` library of ROOT. Just befor the main function we can put the next line: 
 
 ```cpp 
-TApplication theApp("App", &argc, argv);
+TApplication theApp("AppName", &argc, argv);
+// or TApplication theApp("AppName", nullptr, nullptr); 
 ```
 
-Και αφού έχουμε τελειώσει την επεξεργασία μας, στο τέλος πρέπει να τρέξουμε αυτό το ```App```:
+After all our scientific code, we need to run that app:
 
 ```cpp 
 theApp.Run(true);
 ```
-Υπάρχουν περιπτώσεις που το πρόγραμμα δε θα κλείσει μόνο του, οπότε μπορει να χρειαστεί να το σταματήσουμε με ```^C``` (Ctrl+C).
+Most of the times, the program will look like it hangs, but we just need to kill it by hand, or quit ROOT from a GUI window
 
-Οπότε ο κώδικας, θα μοιάζει σε γενικές γραμμές:
+A simple example would look like:
 
 ```cpp
 // For actually seeing the canvases with compiled programs
@@ -79,7 +80,7 @@ int main(int argc, char** argv){
 ## Making Dictionaries
 [https://root.cern/manual/interacting_with_shared_libraries/#generating-dictionaries](https://root.cern/manual/interacting_with_shared_libraries/#generating-dictionaries)
 ### Using Makefiles
-Ας υποθέσουμε ότι έχουμε ένα struct για να εκφράσουμε ένα σωματίδιο, όπου θέλουμε ένα id του σωματιδίου, ώστε να ξέρουμε ποιο είναι, και 3 double μεταβλητές για την ορμή του. Φτιάχνουμε ένα αρχείο *myParticle.h*, όπου θα περιέχει:
+Let's say we have a struct for a particle object that we need for our code, and a particle is basically an id, maybe refering to PDG code, and its momenta. We can put that code in a *myParticle.h*:
 
 ```cpp
 #include <TRoot.h>
@@ -95,11 +96,9 @@ struct myParticle {
 };
 ```
 
-Έστω ότι γενάμε με κάποιο τρόπο γεγονότα, όπου το καθένα έχει ένα αριθμό σωματιδίων. Θα χρησιμοποιήσουμε ένα ```std::vector<myParticle>```  σαν ένα container για τα σωματίδια που υπάρχουν για ένα γεγονός. Αυτό σημαίνει ότι στο root file μας, θα αποθηκεύσουμε ```std::vector<myParticle>```. Αλλά η ROOT δεν ξέρει πώς να το κάνει αυτό.
-Οπότε η λύση είναι να φτιάξουμε ένα dictionary που να λέει στην ROOT πώς να το χρησιμοποιήσει. 
+Somehow in our code, we manage to generate some type of events consisting of a number of particles. We can imagine each event to be a ```std::vector<myParticle>```. We can save each event to a root file in that form, meaning that the branch will have type of ```std::vector<myParticle>```, but ROOT can do that in one step. That's when the notion of creating a `dictionary` for a custom struct/class comes in handy. 
 
-Για αρχή θα φτιάξουμε ένα header file, με όνομα *Linkdef.h*, που θα ορίσουμε ποιες καινούριες 'δομές' θα χρησιμοποιήσουμε. Αυτό το αρχείο θα περιέχει τα εξής:
-
+After creating our custom struct/class, we need to create a header file, usually a name like `LinkDef.h`, where we say for which classes will need a dictionary. In this case we want a dictionary for *myParticle* struct and for the class *std::vector<myParticle>* :
 ```cpp
 #include <vector>
 #include "myParticle.h"

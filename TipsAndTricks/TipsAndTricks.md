@@ -14,39 +14,26 @@
 
 ## Compiling C++ code using Cling
 
-Ο ποιος απλός τρόπος να κάνουμε compile έαν κώδικα που περιέχει βιβλιοθήκες της ROOT, είναι χρησιμοποιώντας την εξής εντολή στην ROOT:
-
+The simplest and most painless way to compile some code using ROOT libraries is using the next line inside ROOT's prompt:
 ``` bash
 .x mycode.cpp+(args)
 ```
-όπου στην παρένθεση βάζουμε τις παραμέτρους που περιμένει το πρόγραμμα, αν περιμένει.
+where args will be the arguments, if any, that the function needs.
 
-
-Το "πρόβλημα" με αυτόν τον τρόπο είναι ότι η συνάρτηση που θέλουμε να τρέξουμε θα πρέπει να έχει το ίδιο όνομα με το αρχείο μας.
-
-
-
-
-
+One problem of  that usage, is that the function that we want to run must have the same name as the file, without the extension part of course.
 
 ## Compiling C++ code using ROOT Libraries
 
-Στην περίπτωση που θέλουμε να προσθέσουμε βιβλιοθήκες της ROOT στον κώδικά μας, μπορούμε πολύ εύκολα να κάνουμε το εξής:
-
+In case we want to use ROOT libraries with our C++ code, we need to add the next bit to the compilation part
 ``` bash
 g++ mycode.cpp -o mycode.exe `root-config --cflags --glibs --ldflags`
 ```
+where the ```root-config --cflags``` will give the cflags that we need, like the c++ standard and the include directories of ROOT, ```root-config --ldflags``` are the linker flags, and ```root-config --glibs``` are the flags for linking with regular ROOT libraries with some GUI part. One can see the ```root-config --help``` for all the options.
 
-Αναλόγως, ποιες βιβλιοθήκες χρησιμοποιούμε, θα πρέπει να προστέσουμε για επιπλεόν options. Για παράδειγμα, αν θέλουμε να χρησιμοποιήσουμε την RooFit χρειαζόμαστε επιπλέον:
-
+For example, if we want to compile with RooFit and Minuit support we need the extra linking flags, because they are not included in the regular flags
 ``` bash
 g++ mycode.cpp -o mycode.exe `root-config --cflags --glibs --ldflags` -lRooFit -lRooFitCore -lMinuit
 ```
-
-Tο ```--cflags``` κάνει setup τα include paths και το ```--glibs``` τα library paths και κάποιες βιβλιοθήκες που χρησιμοποιούνται συχνά.
-
-
-**Σημείωση** : όλα τα παραδείγματα σε C++, είναι φτιαγμένα για να τρέχουν με αυτόν τον τρόπο, είτε με τα Makefiles που βρίσκονται στον εκάστοτε φάκελο.
 
 
 ## Makefiles

@@ -10,7 +10,8 @@ myVector: $$@.cpp libmyParticle.so
 	$(CXX) $(ROOTCXXFLAGS) $@.cpp libmyParticle.so -o $@ $(ROOTLIBS)
 
 libmyParticle.so: MyDict.cxx
-	$(CXX) -shared -fPIC $(ROOTCXXFLAGS) $^ -o $@ $(ROOTLIBS)
+	#$(CXX) -shared -fPIC $(ROOTCXXFLAGS) $^ -o $@ $(ROOTLIBS)
+	$(CXX) -shared -fPIC $(ROOTCXXFLAGS) $^ -o $@
 
 MyDict.cxx: $(HEADERS) Linkdef.h
 	rootcling -f $@ $(ROOTCXXFLAGS) $^

@@ -1,7 +1,6 @@
 #ifndef MYPARTICLE_H
 #define MYPARTICLE_H
 
-#include <ROOT/RDataFrame.hxx>
 #include <TROOT.h>
 
 struct myParticle {

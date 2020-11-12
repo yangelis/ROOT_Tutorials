@@ -28,7 +28,7 @@ In case we want to use ROOT libraries with our C++ code, we need to add the next
 ``` bash
 g++ mycode.cpp -o mycode.exe `root-config --cflags --glibs --ldflags`
 ```
-where the ```root-config --cflags``` will give the cflags that we need, like the c++ standard and the include directories of ROOT, ```root-config --ldflags``` are the linker flags, and ```root-config --glibs``` are the flags for linking with regular ROOT libraries with some GUI part. One can see the ```root-config --help``` for all the options.
+where the `root-config --cflags` will give the cflags that we need, like the c++ standard and the include directories of ROOT, `root-config --ldflags` are the linker flags, and `root-config --glibs` are the flags for linking with regular ROOT libraries with some GUI part. One can see the `root-config --help` for all the options.
 
 For example, if we want to compile with RooFit and Minuit support we need the extra linking flags, because they are not included in the regular flags
 ``` bash
@@ -45,7 +45,7 @@ g++ mycode.cpp -o mycode.exe `root-config --cflags --glibs --ldflags` -lRooFit -
 
 ## ROOT windows in compiled code
 
-One of the problems someone will face, is that GUI windows of ROOT won't appear in compiled code. For this to work we need to do an extra step, using the ```TApplication.h``` library of ROOT. Just befor the main function we can put the next line: 
+One of the problems someone will face, is that GUI windows of ROOT won't appear in compiled code. For this to work we need to do an extra step, using the `TApplication.h` library of ROOT. Just befor the main function we can put the next line: 
 
 ```cpp 
 TApplication theApp("AppName", &argc, argv);
@@ -80,7 +80,7 @@ int main(int argc, char** argv){
 ## Making Dictionaries
 [https://root.cern/manual/interacting_with_shared_libraries/#generating-dictionaries](https://root.cern/manual/interacting_with_shared_libraries/#generating-dictionaries)
 ### Using Makefiles
-Let's say we have a struct for a particle object that we need for our code, and a particle is basically an id, maybe refering to PDG code, and its momenta. We can put that code in a *myParticle.h*:
+Let's say we have a struct for a particle object that we need for our code, and a particle is basically an id, maybe refering to PDG code, and its momenta. We can put that code in a header file like `myParticle.h`:
 
 ```cpp
 #include <TRoot.h>
@@ -96,9 +96,9 @@ struct myParticle {
 };
 ```
 
-Somehow in our code, we manage to generate some type of events consisting of a number of particles. We can imagine each event to be a ```std::vector<myParticle>```. We can save each event to a root file in that form, meaning that the branch will have type of ```std::vector<myParticle>```, but ROOT can do that in one step. That's when the notion of creating a `dictionary` for a custom struct/class comes in handy. 
+Somehow in our code, we manage to generate some type of events consisting of a number of particles. We can imagine each event to be a `std::vector<myParticle>`. We can save each event to a root file in that form, meaning that the branch will have type of `std::vector<myParticle>`, but ROOT can do that in one step. That's when the notion of creating a `dictionary` for a custom struct/class comes in handy. 
 
-After creating our custom struct/class, we need to create a header file, usually a name like `LinkDef.h`, where we say for which classes will need a dictionary. In this case we want a dictionary for *myParticle* struct and for the class *std::vector<myParticle>* :
+After creating our custom struct/class, we need to create a header file, usually a name like `LinkDef.h`, where we say for which classes will need a dictionary. In this case we want a dictionary for *myParticle* struct and for the class `std::vector<myParticle>` :
 ```cpp
 #include <vector>
 #include "myParticle.h"
@@ -108,19 +108,18 @@ After creating our custom struct/class, we need to create a header file, usually
 #endif
 ```
 
-
-Τώρα, μέσω του *rootcling* και των δυο header files που φτιάξαμε πιο πριν, Θα φτιάξουμε ένα αρχείο ας πούμε *myDict.cxx*, από το οποίο μέσω του compiler μας, θα φτιάξουμε ένα shared library (.so file). 
-
+Now, passing to **rootcling** the two header files we created before, we can generate a dictionary, let's say with a name `myDict.cxx`, which will help pass create a shared object file (.so file), that will be linked with the final executable program. 
 ``` sh
 rootcling -f myDict.cxx  $(CXXFLAGS) myParticle.h Linkdef.h
 ```
 
-Επόμενο βήμα, είναι να φτιάξουμε ένα shared library αρχείο, που θα το ονομάσουμε *libmyParticle.so*. 
+For the creation of that shared object, `libmyParticle.so`, we need the next compiler options: 
 ```sh
 g++ -shared -fPIC -o libmyParticle.so `root-config --ldflags --clfags` myDict.cxx
 ```
+Depending of what libraries we are using inside the header, we may need more complicated options, like setting specific include paths and linking with other external libraries
 
-Είμαστε πλέον σε θέση να χρεισιμοποιήσουμε τα `myParticle` και `std::vector<myParticle>`. 
+Finaly, we can compile our code where we can use both `myParticle` and `std::vector<myParticle>` :
 ```sh 
 g++ main.cpp libmyParticle.so -o main `root-config --cflags --glibs --ldflags`
 ```

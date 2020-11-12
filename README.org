@@ -31,7 +31,7 @@ source $ROOTSYS/bin/thisroot.sh
 #+END_SRC
 
 **  Running ROOT from windows with WSL
-Supposing one uses WLS with Ubuntu:
+Supposing one uses WSL with Ubuntu:
 
 - First step is to install [[https://sourceforge.net/projects/vcxsrv/][VcXsrv]] on Windows, which is a way to see WSL's
   X-server. After the installation run the program. Each time you want to see

@@ -14,39 +14,26 @@
 
 ## Compiling C++ code using Cling
 
-Ο ποιος απλός τρόπος να κάνουμε compile έαν κώδικα που περιέχει βιβλιοθήκες της ROOT, είναι χρησιμοποιώντας την εξής εντολή στην ROOT:
-
+The simplest and most painless way to compile some code using ROOT libraries is using the next line inside ROOT's prompt:
 ``` bash
 .x mycode.cpp+(args)
 ```
-όπου στην παρένθεση βάζουμε τις παραμέτρους που περιμένει το πρόγραμμα, αν περιμένει.
+where args will be the arguments, if any, that the function needs.
 
-
-Το "πρόβλημα" με αυτόν τον τρόπο είναι ότι η συνάρτηση που θέλουμε να τρέξουμε θα πρέπει να έχει το ίδιο όνομα με το αρχείο μας.
-
-
-
-
-
+One problem of  that usage, is that the function that we want to run must have the same name as the file, without the extension part of course.
 
 ## Compiling C++ code using ROOT Libraries
 
-Στην περίπτωση που θέλουμε να προσθέσουμε βιβλιοθήκες της ROOT στον κώδικά μας, μπορούμε πολύ εύκολα να κάνουμε το εξής:
-
+In case we want to use ROOT libraries with our C++ code, we need to add the next bit to the compilation part
 ``` bash
 g++ mycode.cpp -o mycode.exe `root-config --cflags --glibs --ldflags`
 ```
+where the `root-config --cflags` will give the cflags that we need, like the c++ standard and the include directories of ROOT, `root-config --ldflags` are the linker flags, and `root-config --glibs` are the flags for linking with regular ROOT libraries with some GUI part. One can see the `root-config --help` for all the options.
 
-Αναλόγως, ποιες βιβλιοθήκες χρησιμοποιούμε, θα πρέπει να προστέσουμε για επιπλεόν options. Για παράδειγμα, αν θέλουμε να χρησιμοποιήσουμε την RooFit χρειαζόμαστε επιπλέον:
-
+For example, if we want to compile with RooFit and Minuit support we need the extra linking flags, because they are not included in the regular flags
 ``` bash
 g++ mycode.cpp -o mycode.exe `root-config --cflags --glibs --ldflags` -lRooFit -lRooFitCore -lMinuit
 ```
-
-Tο ```--cflags``` κάνει setup τα include paths και το ```--glibs``` τα library paths και κάποιες βιβλιοθήκες που χρησιμοποιούνται συχνά.
-
-
-**Σημείωση** : όλα τα παραδείγματα σε C++, είναι φτιαγμένα για να τρέχουν με αυτόν τον τρόπο, είτε με τα Makefiles που βρίσκονται στον εκάστοτε φάκελο.
 
 
 ## Makefiles
@@ -58,20 +45,21 @@ Tο ```--cflags``` κάνει setup τα include paths και το ```--glibs```
 
 ## ROOT windows in compiled code
 
-Στην περίπτωση που θέλουμε να έχουμε ένα executable, για να εμφανιστούν τα παράθυρα της ROOT (πχ histo->Draw()), θα πρέπει να προσθέσουμε την βιβλιοθήκη ```TApplication.h```. Έπειτα, στην αρχή του προγράμματος προσθέτουμε την σειρά:
+One of the problems someone will face, is that GUI windows of ROOT won't appear in compiled code. For this to work we need to do an extra step, using the `TApplication.h` library of ROOT. Just befor the main function we can put the next line: 
 
 ```cpp 
-TApplication theApp("App", &argc, argv);
+TApplication theApp("AppName", &argc, argv);
+// or TApplication theApp("AppName", nullptr, nullptr); 
 ```
 
-Και αφού έχουμε τελειώσει την επεξεργασία μας, στο τέλος πρέπει να τρέξουμε αυτό το ```App```:
+After all our scientific code, we need to run that app:
 
 ```cpp 
 theApp.Run(true);
 ```
-Υπάρχουν περιπτώσεις που το πρόγραμμα δε θα κλείσει μόνο του, οπότε μπορει να χρειαστεί να το σταματήσουμε με ```^C``` (Ctrl+C).
+Most of the times, the program will look like it hangs, but we just need to kill it by hand, or quit ROOT from a GUI window
 
-Οπότε ο κώδικας, θα μοιάζει σε γενικές γραμμές:
+A simple example would look like:
 
 ```cpp
 // For actually seeing the canvases with compiled programs
@@ -92,7 +80,7 @@ int main(int argc, char** argv){
 ## Making Dictionaries
 [https://root.cern/manual/interacting_with_shared_libraries/#generating-dictionaries](https://root.cern/manual/interacting_with_shared_libraries/#generating-dictionaries)
 ### Using Makefiles
-Ας υποθέσουμε ότι έχουμε ένα struct για να εκφράσουμε ένα σωματίδιο, όπου θέλουμε ένα id του σωματιδίου, ώστε να ξέρουμε ποιο είναι, και 3 double μεταβλητές για την ορμή του. Φτιάχνουμε ένα αρχείο *myParticle.h*, όπου θα περιέχει:
+Let's say we have a struct for a particle object that we need for our code, and a particle is basically an id, maybe refering to PDG code, and its momenta. We can put that code in a header file like `myParticle.h`:
 
 ```cpp
 #include <TRoot.h>
@@ -108,11 +96,9 @@ struct myParticle {
 };
 ```
 
-Έστω ότι γενάμε με κάποιο τρόπο γεγονότα, όπου το καθένα έχει ένα αριθμό σωματιδίων. Θα χρησιμοποιήσουμε ένα ```std::vector<myParticle>```  σαν ένα container για τα σωματίδια που υπάρχουν για ένα γεγονός. Αυτό σημαίνει ότι στο root file μας, θα αποθηκεύσουμε ```std::vector<myParticle>```. Αλλά η ROOT δεν ξέρει πώς να το κάνει αυτό.
-Οπότε η λύση είναι να φτιάξουμε ένα dictionary που να λέει στην ROOT πώς να το χρησιμοποιήσει. 
+Somehow in our code, we manage to generate some type of events consisting of a number of particles. We can imagine each event to be a `std::vector<myParticle>`. We can save each event to a root file in that form, meaning that the branch will have type of `std::vector<myParticle>`, but ROOT can do that in one step. That's when the notion of creating a `dictionary` for a custom struct/class comes in handy. 
 
-Για αρχή θα φτιάξουμε ένα header file, με όνομα *Linkdef.h*, που θα ορίσουμε ποιες καινούριες 'δομές' θα χρησιμοποιήσουμε. Αυτό το αρχείο θα περιέχει τα εξής:
-
+After creating our custom struct/class, we need to create a header file, usually a name like `LinkDef.h`, where we say for which classes will need a dictionary. In this case we want a dictionary for *myParticle* struct and for the class `std::vector<myParticle>` :
 ```cpp
 #include <vector>
 #include "myParticle.h"
@@ -122,19 +108,18 @@ struct myParticle {
 #endif
 ```
 
-
-Τώρα, μέσω του *rootcling* και των δυο header files που φτιάξαμε πιο πριν, Θα φτιάξουμε ένα αρχείο ας πούμε *myDict.cxx*, από το οποίο μέσω του compiler μας, θα φτιάξουμε ένα shared library (.so file). 
-
+Now, passing to **rootcling** the two header files we created before, we can generate a dictionary, let's say with a name `myDict.cxx`, which will help pass create a shared object file (.so file), that will be linked with the final executable program. 
 ``` sh
 rootcling -f myDict.cxx  $(CXXFLAGS) myParticle.h Linkdef.h
 ```
 
-Επόμενο βήμα, είναι να φτιάξουμε ένα shared library αρχείο, που θα το ονομάσουμε *libmyParticle.so*. 
+For the creation of that shared object, `libmyParticle.so`, we need the next compiler options: 
 ```sh
 g++ -shared -fPIC -o libmyParticle.so `root-config --ldflags --clfags` myDict.cxx
 ```
+Depending of what libraries we are using inside the header, we may need more complicated options, like setting specific include paths and linking with other external libraries
 
-Είμαστε πλέον σε θέση να χρεισιμοποιήσουμε τα `myParticle` και `std::vector<myParticle>`. 
+Finaly, we can compile our code where we can use both `myParticle` and `std::vector<myParticle>` :
 ```sh 
 g++ main.cpp libmyParticle.so -o main `root-config --cflags --glibs --ldflags`
 ```

@@ -4,15 +4,13 @@ LIBS := -lMinuit -lRooFit -lRooFitCore
 .SECONDEXPANSION:
 .PHONY: all clean
 
-
-01_histo: $$@.cpp
-	$(CXX) -g $< -o $@.exe $(ROOTCXXFLAGS)
-
-02_roofit: $$@.cpp
-	$(CXX) -g $< -o $@.exe $(ROOTCXXFLAGS) $(LIBS)
-
-
 all: 01_histo 02_roofit
 
+01_histo: $$@.cpp
+	$(CXX) -g $< -o $@ $(ROOTCXXFLAGS)
+
+02_roofit: $$@.cpp
+	$(CXX) -g $< -o $@ $(ROOTCXXFLAGS) $(LIBS)
+
 clean: 
-	@rm -f *.exe 
+	rm -f 01_histo 02_roofit

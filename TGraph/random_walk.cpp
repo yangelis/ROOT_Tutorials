@@ -3,6 +3,9 @@
 #include <TGraph.h>
 #include <TGraph2D.h>
 #include <TRandom3.h>
+#include <vector>
+
+using namespace std;
 
 void random_walk2d(const size_t N = 10000) {
 
@@ -24,15 +27,17 @@ void random_walk2d(const size_t N = 10000) {
 void random_walk3d(const size_t N = 10000) {
 
   TRandom3 rng{};
-  auto xyz_scatter = new TGraph2D();
-  xyz_scatter->SetTitle(";x;y;z");
-  double x = 0, y = 0, z = 0;
+
+  vector<double> x(N), y(N), z(N);
+  x[0] = y[0] = z[0] = 0.0;
   for (size_t i = 0; i < N; ++i) {
-    xyz_scatter->SetPoint(i, x, y, z);
-    x += (rng.Uniform() - 0.5) / 2.0;
-    y += (rng.Uniform() - 0.5) / 2.0;
-    z += (rng.Uniform() - 0.5) / 2.0;
+    x[i] = x[i - 1] + (rng.Uniform() - 0.5) / 2.0;
+    y[i] = y[i - 1] + (rng.Uniform() - 0.5) / 2.0;
+    z[i] = z[i - 1] + (rng.Uniform() - 0.5) / 2.0;
   }
+
+  auto xyz_scatter = new TGraph2D(N, x.data(), y.data(), z.data());
+  xyz_scatter->SetTitle(";x;y;z");
 
   auto c = new TCanvas("3d");
   xyz_scatter->Draw("LINE");

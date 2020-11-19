@@ -5,7 +5,7 @@ HEADERS       := myParticle.h
 
 
 myVector: myVector.cpp libmyParticle.so
-	$(CXX) $(ROOTCXXFLAGS) $< -Wl,-rpath,. -L. -lmyParticle -o $@ $(ROOTLIBS)
+	$(CXX) $(ROOTCXXFLAGS) $< -lmyParticle -L. -Wl,-rpath,\$$ORIGIN -o $@ $(ROOTLIBS)
 
 libmyParticle.so: MyDict.cxx
 	$(CXX) -shared -fPIC $(ROOTCXXFLAGS) $^ -o $@

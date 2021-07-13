@@ -16,14 +16,15 @@ struct Point {
   double r() const { return sqrt(x * x + y * y); }
 };
 
-double pimc(const size_t n = 100, const bool plot = false)
+double pi_monte_carlo(const size_t n = 100000, const bool plot = true)
 {
   TRandom3 rng(0);
 
   size_t p_inside_rect   = n;
   size_t p_inside_circle = 0;
-  Point points_rect[n];
+  vector<Point> points_rect(n); // we know their size
   vector<Point> points_circle;
+  points_circle.reserve(n); // pre-allocating a bigger size
 
   auto in_circle = [](const Point& p) {
     if (p.r() < R) {
@@ -41,14 +42,15 @@ double pimc(const size_t n = 100, const bool plot = false)
   }
 
   if (plot) {
-    auto mg     = new TMultiGraph();
-    auto rect   = new TGraph();
-    auto circle = new TGraph();
+    auto* mg     = new TMultiGraph();
+    auto* rect   = new TGraph();
+    auto* circle = new TGraph();
     for (size_t i = 0; i < n; ++i) {
-      rect->SetPoint(i, points_rect[i].x, points_rect[i].y);
+      rect->SetPoint(static_cast<int>(i), points_rect[i].x, points_rect[i].y);
     }
     for (size_t i = 0; i < points_circle.size(); ++i) {
-      circle->SetPoint(i, points_circle[i].x, points_circle[i].y);
+      circle->SetPoint(static_cast<int>(i), points_circle[i].x,
+                       points_circle[i].y);
     }
 
     rect->SetMarkerStyle(20);
@@ -58,7 +60,8 @@ double pimc(const size_t n = 100, const bool plot = false)
     mg->Add(circle);
     mg->Draw("ap");
   }
-  return 4.0 * (double)p_inside_circle / p_inside_rect;
+  return 4.0 * static_cast<double>(p_inside_circle) /
+         static_cast<double>(p_inside_rect);
 }
 
 int main()
@@ -69,12 +72,13 @@ int main()
 
   auto graph = new TGraph();
   graph->SetTitle(";N points;approx/#pi");
-  size_t i = 0;
+  int i = 0;
   for (size_t n = 10; n < N; n += 10) {
-    graph->SetPoint(i++, n, pimc(n) / TMath::Pi());
+    graph->SetPoint(i++, static_cast<double>(n),
+                    pi_monte_carlo(n, false) / TMath::Pi());
   }
 
-  auto c = new TCanvas();
+  auto* c = new TCanvas();
   graph->Draw("AC");
   c->Draw();
 

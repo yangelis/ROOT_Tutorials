@@ -1,16 +1,17 @@
-ROOTCXXFLAGS := $(shell root-config --cflags --glibs --ldflags)
-LIBS := -lMinuit -lRooFit -lRooFitCore
+ROOTCXXFLAGS := $(shell root-config --cflags)
+ROOTLIBS     := $(shell root-config --glibs --ldflags)
+LIBS         := -lMinuit -lRooFit -lRooFitCore # extra ROOT libraries to link with
 
 .SECONDEXPANSION:
 .PHONY: all clean
 
-all: 01_histo 02_roofit
+all: h01_histo h02_roofit
 
-01_histo: $$@.cpp
-	$(CXX) -g $< -o $@ $(ROOTCXXFLAGS)
+h01_histo: $$@.cpp
+	$(CXX) $(ROOTCXXFLAGS) $< -o $@ $(ROOTLIBS)
 
-02_roofit: $$@.cpp
-	$(CXX) -g $< -o $@ $(ROOTCXXFLAGS) $(LIBS)
+h02_roofit: $$@.cpp
+	$(CXX) $(ROOTCXXFLAGS) -g $< -o $@ $(ROOTLIBS) $(LIBS)
 
 clean: 
-	rm -f 01_histo 02_roofit
+	rm -f h01_histo h02_roofit

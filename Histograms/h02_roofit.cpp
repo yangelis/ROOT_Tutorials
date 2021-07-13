@@ -14,10 +14,10 @@
 using namespace std;
 using namespace RooFit;
 
-int main(int argc, char** argv)
+void h02_roofit()
 {
-  TApplication theApp("App", &argc, argv);
-  auto canvas = new TCanvas();
+
+  auto* canvas = new TCanvas();
   canvas->SetBorderMode(0);
   const vector<double> zPoints = {
       93.4, 89.3, 94.9, 90.7, 89.9, 89.3, 90.9, 93.8, 91.3, 92.9,
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
   RooGaussian gauss("gauss", "Gaussian PDF", x, mean, sigma);
   RooDataHist dh("dh", "data", RooArgList(x), zmass_5bins);
 
-  auto result_b5 = gauss.fitTo(dh, PrintLevel(0));
+  auto result_b5 = gauss.fitTo(dh, PrintLevel(1));
 
   auto xframe = x.frame();
   dh.plotOn(xframe);
@@ -49,12 +49,14 @@ int main(int argc, char** argv)
 
   mean.Print();
   sigma.Print();
+}
 
+int main(int argc, char** argv)
+{
+  TApplication theApp("App", &argc, argv);
+  h02_roofit();
   cout << "To exit, quit ROOT from the File menu of the plot" << endl;
-  theApp.Run(true);
-  canvas->Close();
+  theApp.Run();
 
-  delete canvas;
-  delete zmass_5bins;
   return 0;
 }

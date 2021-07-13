@@ -5,7 +5,7 @@ using the same range as they created with and fit some functions on them using R
 """
 
 import ROOT
-from ROOT import TFile, TF1, TH1D
+from ROOT import TFile, TF1, TH1D, TCanvas
 import numpy as np
 
 
@@ -100,11 +100,14 @@ fitf = TF1("fit", ROOT.fitf, 10, 20, 3)
 # Making easier the fit setting the cauchy parameter at the peak
 fitf.SetParameter(2, 14)
 # Setting the line style
-fitf.SetLineStyle(3)
+fitf.SetLineStyle(1)
 
 # Fitting the data, using the "R" we tell it to use the range
 # used in the TF1 declaration
+canvas = TCanvas("c1", "Fiting histogram", 1366, 768)
 hist.Fit(fitf, "R")
+hist.DrawClone()
+canvas.Draw()
 
 input("Press enter to close.")
 

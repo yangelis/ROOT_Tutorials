@@ -11,15 +11,16 @@
 using RDF = ROOT::RDataFrame;
 using std::vector;
 
-void myVector() {
+void myVector()
+{
 
   // gSystem->Load("libmyParticle.so");
-  constexpr size_t N = 10;       // Number of Particles
+  constexpr size_t N       = 10; // Number of Particles
   constexpr size_t nEvents = 10; // Number of events
-  TFile *f =
+  TFile* f =
       TFile::Open("vector_particles.root", "RECREATE"); // Creating a root file
   vector<myParticle> particles; // std::vector containing myParticles
-  TTree *t =
+  TTree* t =
       new TTree("tvec", "Tree with vectors of myParticles"); // Create a TTree
   t->Branch("particles", &particles);                        // Create a branch
 
@@ -39,14 +40,15 @@ void myVector() {
   delete f;
 }
 
-void rdf_example() {
+void rdf_example()
+{
   // gSystem->Load("libmyParticle.so");
-  constexpr size_t N = 10;       // Number of Particles
+  constexpr size_t N       = 10; // Number of Particles
   constexpr size_t nEvents = 10; // Number of events
 
   RDF df(nEvents);
 
-  auto rng = TRandom3();
+  auto rng    = TRandom3();
   auto df_vec = df.Define("particles", [&rng]() {
                     return myParticle(
                         {(int)rng.Gaus(), rng.Gaus(), rng.Gaus(), rng.Gaus()});
@@ -66,7 +68,8 @@ void rdf_example() {
   df_vec.Snapshot("vectors", "testfile.root", {"part_vec"}, opts);
 }
 
-int main() {
+int main()
+{
   myVector();
   rdf_example();
   return 0;

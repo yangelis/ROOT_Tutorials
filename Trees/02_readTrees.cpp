@@ -5,13 +5,14 @@
 
 using namespace std;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
   if (argc == 1) {
     fprintf(stderr, "No file provided. Please run 01_saveTrees first\n");
     exit(1);
   }
 
-  TFile *hfile = TFile::Open(argv[1], "READ");
+  TFile* hfile = TFile::Open(argv[1], "READ");
   // or
   // TFile hfile(argv[1], "READ");
 
@@ -22,7 +23,7 @@ int main(int argc, char **argv) {
   }
 
   // Reading from the simple tree
-  TTree *tree = nullptr;
+  TTree* tree = nullptr;
   double px, py;
   int xx;
 
@@ -39,10 +40,10 @@ int main(int argc, char **argv) {
   }
 
   // Reading from the tree containing vectors
-  TTree *vectree = nullptr;
-  vector<double> *vec_px = nullptr;
-  vector<double> *vec_py = nullptr;
-  vector<int> *vec_xx = nullptr;
+  TTree* vectree         = nullptr;
+  vector<double>* vec_px = nullptr;
+  vector<double>* vec_py = nullptr;
+  vector<int>* vec_xx    = nullptr;
   hfile->GetObject("vectree", vectree);
   vectree->SetBranchAddress("px", &vec_px);
   vectree->SetBranchAddress("py", &vec_py);

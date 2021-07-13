@@ -7,7 +7,8 @@
 using namespace std;
 using RDF = ROOT::RDataFrame;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
   TApplication theApp("App", &argc, argv);
 
   // declaring a variable for the dataframe

@@ -7,7 +7,8 @@
 
 using namespace std;
 
-void random_walk2d(const size_t N = 10000) {
+void random_walk2d(const size_t N = 10000)
+{
 
   TRandom3 rng{};
   auto xy_scatter = new TGraph();
@@ -24,7 +25,8 @@ void random_walk2d(const size_t N = 10000) {
   c->Draw();
 }
 
-void random_walk3d(const size_t N = 10000) {
+void random_walk3d(const size_t N = 10000)
+{
 
   TRandom3 rng{};
 
@@ -44,7 +46,8 @@ void random_walk3d(const size_t N = 10000) {
   c->Draw();
 }
 
-int main(int agrc, char *argv[]) {
+int main(int agrc, char* argv[])
+{
   TApplication app("Random walk", nullptr, nullptr);
 
   random_walk2d();

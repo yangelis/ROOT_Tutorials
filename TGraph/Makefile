@@ -3,7 +3,7 @@ CXXFLAGS := ${ROOTCXXFLAGS} -Wall -ggdb -O0
 LIBS := `root-config --ldflags --libs`
 
 .PHONY: all
-all: random_walk pi_monte_carlo
+all: random_walk pi_monte_carlo recaman
 
 %: %.cpp
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LIBS)

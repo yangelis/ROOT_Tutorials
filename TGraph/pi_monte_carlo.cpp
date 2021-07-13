@@ -16,15 +16,16 @@ struct Point {
   double r() const { return sqrt(x * x + y * y); }
 };
 
-double pimc(const size_t n = 100, const bool plot = false) {
+double pimc(const size_t n = 100, const bool plot = false)
+{
   TRandom3 rng(0);
 
-  size_t p_inside_rect = n;
+  size_t p_inside_rect   = n;
   size_t p_inside_circle = 0;
   Point points_rect[n];
   vector<Point> points_circle;
 
-  auto in_circle = [](const Point &p) {
+  auto in_circle = [](const Point& p) {
     if (p.r() < R) {
       return true;
     }
@@ -40,8 +41,8 @@ double pimc(const size_t n = 100, const bool plot = false) {
   }
 
   if (plot) {
-    auto mg = new TMultiGraph();
-    auto rect = new TGraph();
+    auto mg     = new TMultiGraph();
+    auto rect   = new TGraph();
     auto circle = new TGraph();
     for (size_t i = 0; i < n; ++i) {
       rect->SetPoint(i, points_rect[i].x, points_rect[i].y);
@@ -60,7 +61,8 @@ double pimc(const size_t n = 100, const bool plot = false) {
   return 4.0 * (double)p_inside_circle / p_inside_rect;
 }
 
-int main() {
+int main()
+{
   TApplication app("pimc", nullptr, nullptr);
 
   constexpr size_t N = 10000;
@@ -69,7 +71,7 @@ int main() {
   graph->SetTitle(";N points;approx/#pi");
   size_t i = 0;
   for (size_t n = 10; n < N; n += 10) {
-    graph->SetPoint(i++, n, pimc(n)/TMath::Pi());
+    graph->SetPoint(i++, n, pimc(n) / TMath::Pi());
   }
 
   auto c = new TCanvas();
